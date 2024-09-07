@@ -1,0 +1,12 @@
+name: one-million-beers
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-one-million-beers
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_SCHEMA: public
+    ports:
+      - 6000:5432

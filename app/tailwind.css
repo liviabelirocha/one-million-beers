@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  input {
+    @apply border border-gray-300 rounded-md p-2 text-gray-800;
+  }
+
+  button {
+    @apply bg-orange-400 text-white rounded-md p-2 disabled:bg-orange-200;
+  }
+}

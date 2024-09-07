@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -6,6 +7,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "One Million Beers" }];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,7 +21,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-slate-800 text-gray-100">
         {children}
         <ScrollRestoration />
         <Scripts />
