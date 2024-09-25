@@ -22,10 +22,18 @@ export const createGroup = async ({
     },
   });
 
-export const joinGroup = async (params: { groupId: string; userId: string }) =>
-  db.groupUser.create({
+export const joinGroup = async (params: {
+  groupId: string;
+  userId: string;
+}) => {
+  const userInGroup = await findUserInGroup(params);
+
+  if (userInGroup) return userInGroup;
+
+  return db.groupUser.create({
     data: params,
   });
+};
 
 export const findUserInGroup = async (params: {
   groupId: string;

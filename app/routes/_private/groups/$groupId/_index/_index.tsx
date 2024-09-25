@@ -22,6 +22,9 @@ const addBeerValidation = z.object({
     .refine((val) => !Number.isNaN(parseInt(val, 10)), {
       message: "Expected number, received a string",
     })
+    .refine((val) => parseInt(val, 10) > 0, {
+      message: "Expected a number greater than 0",
+    })
     .transform((val) => parseInt(val, 10)),
 });
 

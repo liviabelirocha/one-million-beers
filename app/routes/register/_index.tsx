@@ -13,6 +13,8 @@ export const action = async (params: ActionFunctionArgs) => {
       throwOnError: true,
     });
   } catch (error) {
+    console.error(error);
+
     if (error instanceof Response) return error;
 
     // @ts-expect-error error handling sucks
