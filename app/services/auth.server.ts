@@ -1,18 +1,25 @@
-// app/services/auth.server.ts
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { User as DbUser } from "@prisma/client";
 import { compare, hash } from "bcrypt";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
+import { z } from "zod";
 import { findOrCreateUser, findUserByUsername } from "~/.server/user";
 import { parseZod, ValidationError } from "~/utils";
 import { sessionStorage } from "./session.server";
-import { signIn } from "./validations";
 
-export const authenticator = new Authenticator<DbUser>(sessionStorage);
+export type User = Omit<DbUser, "password">;
+
+export const authenticator = new Authenticator<User>(sessionStorage);
+
+const signInValidation = z.object({
+  username: z.string().min(3).max(20),
+  password: z.string().min(3),
+});
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
-    const { errors, data } = parseZod(signIn, form);
+    const { errors, data } = parseZod(signInValidation, form);
 
     if (errors) throw new ValidationError("Invalid form data", errors);
 
@@ -27,14 +34,16 @@ authenticator.use(
         password: ["Invalid password"],
       });
 
-    return user;
+    const { password, ...rest } = user;
+
+    return rest;
   }),
   "user-sign-in"
 );
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
-    const { errors, data } = parseZod(signIn, form);
+    const { errors, data } = parseZod(signInValidation, form);
 
     if (errors) throw new ValidationError("Invalid form data", errors);
 
@@ -52,7 +61,9 @@ authenticator.use(
         password: ["Invalid password"],
       });
 
-    return user;
+    const { password, ...rest } = user;
+
+    return rest;
   }),
   "user-sign-up"
 );

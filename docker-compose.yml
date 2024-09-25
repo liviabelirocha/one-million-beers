@@ -3,6 +3,7 @@ services:
   postgres:
     image: postgres
     container_name: postgres-one-million-beers
+    tty: true
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

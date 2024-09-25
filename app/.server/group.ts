@@ -2,14 +2,14 @@ import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
 
-export const create = async ({
+export const createGroup = async ({
   name,
   userId,
 }: {
   name: string;
   userId: string;
-}) => {
-  await db.group.create({
+}) =>
+  db.group.create({
     data: {
       name: name,
       users: {
@@ -21,13 +21,11 @@ export const create = async ({
       },
     },
   });
-};
 
-export const addUser = async (params: { groupId: string; userId: string }) => {
-  await db.groupUser.create({
+export const joinGroup = async (params: { groupId: string; userId: string }) =>
+  db.groupUser.create({
     data: params,
   });
-};
 
 export const findUserInGroup = async (params: {
   groupId: string;
@@ -44,10 +42,19 @@ export const findUserInGroup = async (params: {
   return group;
 };
 
-export const list = async (userId: string) => {
-  return db.group.findMany({
+export const listGroups = async (userId: string) =>
+  db.group.findMany({
     where: {
       users: { some: { userId } },
     },
   });
-};
+
+export const listUsersInGroup = async (groupId: string) =>
+  db.groupUser.findMany({
+    where: {
+      groupId: groupId,
+    },
+    include: {
+      user: true,
+    },
+  });

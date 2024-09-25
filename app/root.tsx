@@ -8,6 +8,17 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 
+declare global {
+  interface BigInt {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    toJSON(): Number;
+  }
+}
+
+BigInt.prototype.toJSON = function () {
+  return Number(this);
+};
+
 export const meta: MetaFunction = () => {
   return [{ title: "One Million Beers" }];
 };

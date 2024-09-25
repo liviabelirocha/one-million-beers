@@ -28,9 +28,18 @@ model Group {
 }
 
 model GroupUser {
-  id      String  @id @default(uuid())
-  userId  String?
+  id      String @id @default(uuid())
+  userId  String
   groupId String
-  group   Group   @relation(fields: [groupId], references: [id])
-  user    User?   @relation(fields: [userId], references: [id])
+  group   Group  @relation(fields: [groupId], references: [id])
+  user    User?  @relation(fields: [userId], references: [id])
+  beers   Beer[]
+}
+
+model Beer {
+  id          String    @id @default(uuid())
+  amount      Int
+  createdAt   DateTime  @default(now())
+  groupUserId String
+  groupUser   GroupUser @relation(fields: [groupUserId], references: [id])
 }

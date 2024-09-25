@@ -1,0 +1,1 @@
+export const ONE_MILLION_BEERS = 1000000;
