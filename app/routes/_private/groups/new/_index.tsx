@@ -1,5 +1,6 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { Form, json, redirect, useActionData } from "@remix-run/react";
+import { Form, json, useActionData } from "@remix-run/react";
+import { redirectWithSuccess } from "remix-toast";
 import { z } from "zod";
 import { createGroup } from "~/.server/group";
 import { Input } from "~/components/input";
@@ -21,7 +22,9 @@ export const action = (params: ActionFunctionArgs) =>
 
     const group = await createGroup({ name: data.name, userId: user.id });
 
-    return redirect(`/groups/${group.id}`);
+    return redirectWithSuccess(`/groups/${group.id}`, {
+      message: "Group created successfully!",
+    });
   });
 
 export default function Index() {

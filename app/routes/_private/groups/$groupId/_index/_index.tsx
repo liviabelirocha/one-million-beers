@@ -6,6 +6,7 @@ import {
   useOutletContext,
 } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import { jsonWithSuccess } from "remix-toast";
 import { z } from "zod";
 import { addBeer } from "~/.server/beer";
 import { Input } from "~/components/input";
@@ -38,7 +39,10 @@ export const action = (params: ActionFunctionArgs) =>
 
     await addBeer({ amount: data.beers, groupUserId: data.groupUserId });
 
-    return json({ ok: true });
+    return jsonWithSuccess(
+      { ok: true },
+      { message: "Beers added successfully!" }
+    );
   });
 
 export default function Index() {

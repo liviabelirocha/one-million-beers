@@ -1,5 +1,6 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { jsonWithError } from "remix-toast";
 import { Input } from "~/components/input";
 import { SubmitButton } from "~/components/submit-button";
 import { authenticator } from "~/services/auth.server";
@@ -21,7 +22,9 @@ export const action = async (params: ActionFunctionArgs) => {
       // @ts-expect-error error handling sucks
       return json({ errors: error.cause.data }, { status: 400 });
 
-    return json({ errors: { toast: ["An error occurred"] } }, { status: 400 });
+    return jsonWithError(null, {
+      message: "Oops! Something went wrong. Please try again later.",
+    });
   }
 };
 
